@@ -35,18 +35,8 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis'
-                script {
-                    def scannerHome = tool 'SonarScanner'
-                    withSonarQubeEnv('My Sonar Server') {
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=devops-app \
-                            -Dsonar.projectName=devops-app \
-                            -Dsonar.sources=src/main/java \
-                            -Dsonar.tests=src/test/java \
-                            -Dsonar.java.binaries=target/classes
-                        """
-                    }
+                withSonarQubeEnv('My Sonar Server') {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
